@@ -10,30 +10,45 @@
             <h2 class="card-title">Resize Image</h2>
             <p class="card-description">Change the dimensions of your image while maintaining quality.</p>
             
-            <form action="/image/resize" method="post" enctype="multipart/form-data" class="form">
-                <div class="form-group">
-                    <label for="file" class="form-label">Select Image</label>
-                    <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="width" class="form-label">Width (pixels)</label>
-                    <input type="number" name="width" id="width" min="1" class="form-input" required>
+            <form action="/image/resize" method="post" enctype="multipart/form-data" class="form" id="resize-form">
+                <div class="form-controls">
+                    <div class="form-group">
+                        <label for="file" class="form-label">Select Image</label>
+                        <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="width" class="form-label">Width (pixels)</label>
+                        <input type="number" name="width" id="width" min="1" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="height" class="form-label">Height (pixels)</label>
+                        <input type="number" name="height" id="height" min="1" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" name="maintain_aspect" id="maintain-aspect" checked>
+                            Maintain aspect ratio
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Resize Image</button>
                 </div>
 
-                <div class="form-group">
-                    <label for="height" class="form-label">Height (pixels)</label>
-                    <input type="number" name="height" id="height" min="1" class="form-input" required>
+                <div class="image-preview-container" id="preview-container" style="display: none;">
+                    <div class="image-preview-wrapper">
+                        <img id="preview-image" src="" alt="Preview">
+                        <div class="resize-handle top-left"></div>
+                        <div class="resize-handle top-right"></div>
+                        <div class="resize-handle bottom-left"></div>
+                        <div class="resize-handle bottom-right"></div>
+                    </div>
+                    <div class="image-dimensions">
+                        <span id="image-width">0</span> × <span id="image-height">0</span> pixels
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        <input type="checkbox" name="maintain_aspect" checked>
-                        Maintain aspect ratio
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Resize Image</button>
             </form>
         </div>
 
@@ -42,21 +57,23 @@
             <p class="card-description">Convert your image to a different format.</p>
             
             <form action="/image/convert" method="post" enctype="multipart/form-data" class="form">
-                <div class="form-group">
-                    <label for="file" class="form-label">Select Image</label>
-                    <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
-                </div>
+                <div class="form-controls">
+                    <div class="form-group">
+                        <label for="file" class="form-label">Select Image</label>
+                        <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="format" class="form-label">Target Format</label>
-                    <select name="format" id="format" class="form-input" required>
-                        {% for format in formats %}
-                        <option value="{{ format.lower() }}">{{ format }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="format" class="form-label">Target Format</label>
+                        <select name="format" id="format" class="form-input" required>
+                            {% for format in formats %}
+                            <option value="{{ format.lower() }}">{{ format }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                <button type="submit" class="btn btn-primary">Convert Image</button>
+                    <button type="submit" class="btn btn-primary">Convert Image</button>
+                </div>
             </form>
         </div>
 
@@ -65,18 +82,20 @@
             <p class="card-description">Reduce file size while maintaining acceptable quality.</p>
             
             <form action="/image/optimize" method="post" enctype="multipart/form-data" class="form">
-                <div class="form-group">
-                    <label for="file" class="form-label">Select Image</label>
-                    <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
-                </div>
+                <div class="form-controls">
+                    <div class="form-group">
+                        <label for="file" class="form-label">Select Image</label>
+                        <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="quality" class="form-label">Quality (1-100)</label>
-                    <input type="range" name="quality" id="quality" min="1" max="100" value="85" class="form-input" required>
-                    <output for="quality" id="quality-value">85</output>
-                </div>
+                    <div class="form-group">
+                        <label for="quality" class="form-label">Quality (1-100)</label>
+                        <input type="range" name="quality" id="quality" min="1" max="100" value="85" class="form-input" required>
+                        <output for="quality" id="quality-value">85</output>
+                    </div>
 
-                <button type="submit" class="btn btn-primary">Optimize Image</button>
+                    <button type="submit" class="btn btn-primary">Optimize Image</button>
+                </div>
             </form>
         </div>
     </div>
@@ -91,12 +110,199 @@
 
 {% block scripts %}
 <script>
-    // Update quality value display
+    // Quality slider functionality
     const qualityInput = document.getElementById('quality');
     const qualityOutput = document.getElementById('quality-value');
-    
     qualityInput.addEventListener('input', function() {
         qualityOutput.textContent = this.value;
+    });
+
+    // Image resize preview functionality
+    const fileInput = document.getElementById('file');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImage = document.getElementById('preview-image');
+    const widthInput = document.getElementById('width');
+    const heightInput = document.getElementById('height');
+    const maintainAspect = document.getElementById('maintain-aspect');
+    const widthDisplay = document.getElementById('image-width');
+    const heightDisplay = document.getElementById('image-height');
+    const resizeForm = document.getElementById('resize-form');
+    let originalWidth = 0;
+    let originalHeight = 0;
+    let aspectRatio = 1;
+
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewImage.onload = function() {
+                    originalWidth = this.naturalWidth;
+                    originalHeight = this.naturalHeight;
+                    aspectRatio = originalWidth / originalHeight;
+                    
+                    // Set initial dimensions
+                    widthInput.value = originalWidth;
+                    heightInput.value = originalHeight;
+                    updateDimensionsDisplay(originalWidth, originalHeight);
+                    
+                    // Show preview
+                    previewContainer.style.display = 'block';
+                    
+                    // Scale image to fit container while maintaining aspect ratio
+                    const containerWidth = previewContainer.clientWidth - 64; // Account for padding
+                    const scale = Math.min(1, containerWidth / originalWidth);
+                    const scaledWidth = originalWidth * scale;
+                    const scaledHeight = originalHeight * scale;
+                    
+                    previewImage.style.width = scaledWidth + 'px';
+                    previewImage.style.height = scaledHeight + 'px';
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Handle resize handles dragging
+    const handles = document.querySelectorAll('.resize-handle');
+    let isDragging = false;
+    let currentHandle = null;
+    let startX, startY, startWidth, startHeight;
+
+    handles.forEach(handle => {
+        handle.addEventListener('mousedown', startResize);
+        handle.addEventListener('touchstart', startResize);
+    });
+
+    document.addEventListener('mousemove', resize);
+    document.addEventListener('touchmove', resize);
+    document.addEventListener('mouseup', stopResize);
+    document.addEventListener('touchend', stopResize);
+
+    function startResize(e) {
+        isDragging = true;
+        currentHandle = e.target;
+        
+        const rect = previewImage.getBoundingClientRect();
+        startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+        startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+        startWidth = rect.width;
+        startHeight = rect.height;
+
+        e.preventDefault();
+    }
+
+    function resize(e) {
+        if (!isDragging) return;
+
+        const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+        const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+        
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+        
+        let newWidth = startWidth;
+        let newHeight = startHeight;
+
+        // Calculate new dimensions based on which handle is being dragged
+        if (currentHandle.classList.contains('bottom-right')) {
+            newWidth = startWidth + dx;
+            if (maintainAspect.checked) {
+                newHeight = newWidth / aspectRatio;
+            } else {
+                newHeight = startHeight + dy;
+            }
+        } else if (currentHandle.classList.contains('bottom-left')) {
+            newWidth = startWidth - dx;
+            if (maintainAspect.checked) {
+                newHeight = newWidth / aspectRatio;
+            } else {
+                newHeight = startHeight + dy;
+            }
+        } else if (currentHandle.classList.contains('top-right')) {
+            newWidth = startWidth + dx;
+            if (maintainAspect.checked) {
+                newHeight = newWidth / aspectRatio;
+            } else {
+                newHeight = startHeight - dy;
+            }
+        } else if (currentHandle.classList.contains('top-left')) {
+            newWidth = startWidth - dx;
+            if (maintainAspect.checked) {
+                newHeight = newWidth / aspectRatio;
+            } else {
+                newHeight = startHeight - dy;
+            }
+        }
+
+        // Ensure minimum dimensions
+        newWidth = Math.max(50, newWidth);
+        newHeight = Math.max(50, newHeight);
+
+        // Update preview maintaining container constraints
+        const containerWidth = previewContainer.clientWidth - 64; // Account for padding
+        const scale = Math.min(1, containerWidth / newWidth);
+        const scaledWidth = newWidth * scale;
+        const scaledHeight = newHeight * scale;
+        
+        previewImage.style.width = scaledWidth + 'px';
+        previewImage.style.height = scaledHeight + 'px';
+
+        // Update inputs with unscaled dimensions
+        widthInput.value = Math.round(newWidth);
+        heightInput.value = Math.round(newHeight);
+        updateDimensionsDisplay(newWidth, newHeight);
+
+        e.preventDefault();
+    }
+
+    function stopResize() {
+        isDragging = false;
+        currentHandle = null;
+    }
+
+    function updateDimensionsDisplay(width, height) {
+        widthDisplay.textContent = Math.round(width);
+        heightDisplay.textContent = Math.round(height);
+    }
+
+    // Handle manual input changes
+    widthInput.addEventListener('input', function() {
+        if (maintainAspect.checked) {
+            heightInput.value = Math.round(this.value / aspectRatio);
+        }
+        updatePreview();
+    });
+
+    heightInput.addEventListener('input', function() {
+        if (maintainAspect.checked) {
+            widthInput.value = Math.round(this.value * aspectRatio);
+        }
+        updatePreview();
+    });
+
+    function updatePreview() {
+        const width = parseInt(widthInput.value);
+        const height = parseInt(heightInput.value);
+        const containerWidth = previewContainer.clientWidth - 64; // Account for padding
+        const scale = Math.min(1, containerWidth / width);
+        const scaledWidth = width * scale;
+        const scaledHeight = height * scale;
+        
+        previewImage.style.width = scaledWidth + 'px';
+        previewImage.style.height = scaledHeight + 'px';
+        updateDimensionsDisplay(width, height);
+    }
+
+    // Add event listener for aspect ratio changes
+    maintainAspect.addEventListener('change', function() {
+        if (this.checked && originalWidth > 0) {
+            // Recalculate height based on current width to maintain aspect ratio
+            const currentWidth = parseInt(widthInput.value);
+            heightInput.value = Math.round(currentWidth / aspectRatio);
+            updatePreview();
+        }
     });
 </script>
 {% endblock %} 
