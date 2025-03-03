@@ -5,6 +5,7 @@ from pathlib import Path
 import logging
 from datetime import datetime
 from .routes.pdf import router as pdf_router
+from .config import UTILITIES
 
 # Setup logging
 logging.basicConfig(
@@ -43,36 +44,10 @@ app.include_router(pdf_router, prefix="/pdf", tags=["pdf"])
 @app.get("/")
 async def home(request: Request):
     """Render the home page with all available utilities."""
-    utilities = [
-        {
-            "name": "PDF Tools",
-            "description": "Convert, combine, and compress PDF files",
-            "icon": "document",
-            "path": "/pdf"
-        },
-        {
-            "name": "Image Tools",
-            "description": "Compress and resize images",
-            "icon": "photo",
-            "path": "/image"
-        },
-        {
-            "name": "Unit Converter",
-            "description": "Convert between different units of measurement",
-            "icon": "arrows-right-left",
-            "path": "/units"
-        },
-        {
-            "name": "Currency Converter",
-            "description": "Convert between different currencies",
-            "icon": "currency-dollar",
-            "path": "/currency"
-        }
-    ]
     logger.info("Home page accessed")
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "utilities": utilities, "year": request.state.year}
+        {"request": request, "year": request.state.year, "utilities": UTILITIES}
     )
 
 @app.get("/pdf")
@@ -80,8 +55,8 @@ async def pdf_tools(request: Request):
     """Render the PDF tools page."""
     logger.info("PDF tools page accessed")
     return templates.TemplateResponse(
-        "pdf.html",
-        {"request": request, "year": request.state.year}
+        "utilities/pdf.html",
+        {"request": request, "year": request.state.year, "utilities": UTILITIES}
     )
 
 @app.get("/health")

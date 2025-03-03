@@ -2,28 +2,12 @@
 
 {% block content %}
 <div class="grid">
+    {% for utility in utilities %}
     <div class="card">
-        <h2 class="card-title">PDF Tools</h2>
-        <p class="card-description">Combine and compress PDF files easily.</p>
-        <a href="/pdf" class="btn btn-primary">Open PDF Tools</a>
+        <h2 class="card-title">{{ utility.name }}</h2>
+        <p class="card-description">{{ utility.description }}</p>
+        <a href="{{ utility.path }}" class="btn btn-primary">Open {{ utility.name }}</a>
     </div>
-
-    <div class="card">
-        <h2 class="card-title">Image Tools</h2>
-        <p class="card-description">Resize, convert, and optimize images.</p>
-        <a href="/image" class="btn btn-primary">Open Image Tools</a>
-    </div>
-
-    <div class="card">
-        <h2 class="card-title">Unit Converter</h2>
-        <p class="card-description">Convert between different units of measurement.</p>
-        <a href="/units" class="btn btn-primary">Open Unit Converter</a>
-    </div>
-
-    <div class="card">
-        <h2 class="card-title">Currency Converter</h2>
-        <p class="card-description">Convert between different currencies.</p>
-        <a href="/currency" class="btn btn-primary">Open Currency Converter</a>
-    </div>
+    {% endfor %}
 </div>
 {% endblock %} 

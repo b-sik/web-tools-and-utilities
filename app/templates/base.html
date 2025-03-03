@@ -9,7 +9,19 @@
 <body>
     <header class="header">
         <div class="container">
-            <a href="/" class="header-title">Web Utilities</a>
+            <div class="header-content">
+                <a href="/" class="header-title">Web Utilities</a>
+                <nav class="nav">
+                    {% for utility in utilities %}
+                    <a href="{{ utility.path }}" class="nav-link {% if request.path == utility.path %}active{% endif %}">
+                        <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ utility.icon_path }}" />
+                        </svg>
+                        {{ utility.name }}
+                    </a>
+                    {% endfor %}
+                </nav>
+            </div>
         </div>
     </header>
 
