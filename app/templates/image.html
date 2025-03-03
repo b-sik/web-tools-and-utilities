@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section">
+    <h1 class="section-title">Image Tools</h1>
+    <p class="section-description">Resize, convert, and optimize your images with ease.</p>
+
+    <div class="grid">
+        <div class="card">
+            <h2 class="card-title">Resize Image</h2>
+            <p class="card-description">Change the dimensions of your image while maintaining quality.</p>
+            
+            <form action="/image/resize" method="post" enctype="multipart/form-data" class="form">
+                <div class="form-group">
+                    <label for="file" class="form-label">Select Image</label>
+                    <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="width" class="form-label">Width (pixels)</label>
+                    <input type="number" name="width" id="width" min="1" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="height" class="form-label">Height (pixels)</label>
+                    <input type="number" name="height" id="height" min="1" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" name="maintain_aspect" checked>
+                        Maintain aspect ratio
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Resize Image</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Convert Format</h2>
+            <p class="card-description">Convert your image to a different format.</p>
+            
+            <form action="/image/convert" method="post" enctype="multipart/form-data" class="form">
+                <div class="form-group">
+                    <label for="file" class="form-label">Select Image</label>
+                    <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="format" class="form-label">Target Format</label>
+                    <select name="format" id="format" class="form-input" required>
+                        {% for format in formats %}
+                        <option value="{{ format.lower() }}">{{ format }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Convert Image</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Optimize Image</h2>
+            <p class="card-description">Reduce file size while maintaining acceptable quality.</p>
+            
+            <form action="/image/optimize" method="post" enctype="multipart/form-data" class="form">
+                <div class="form-group">
+                    <label for="file" class="form-label">Select Image</label>
+                    <input type="file" name="file" id="file" accept="image/*" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="quality" class="form-label">Quality (1-100)</label>
+                    <input type="range" name="quality" id="quality" min="1" max="100" value="85" class="form-input" required>
+                    <output for="quality" id="quality-value">85</output>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Optimize Image</button>
+            </form>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Update quality value display
+    const qualityInput = document.getElementById('quality');
+    const qualityOutput = document.getElementById('quality-value');
+    
+    qualityInput.addEventListener('input', function() {
+        qualityOutput.textContent = this.value;
+    });
+</script>
+{% endblock %} 
