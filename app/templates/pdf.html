@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">PDF Tools</h2>
+        
+        <div class="space-y-6">
+            <!-- File Upload -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Select PDF Files
+                </label>
+                <input
+                    type="file"
+                    id="pdf-files"
+                    multiple
+                    accept=".pdf"
+                    class="block w-full text-sm text-gray-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-md file:border-0
+                        file:text-sm file:font-medium
+                        file:bg-primary file:text-white
+                        hover:file:bg-primary/90"
+                >
+            </div>
+
+            <!-- Selected Files List -->
+            <div id="selected-files" class="hidden space-y-2">
+                <h3 class="text-sm font-medium text-gray-700">Selected Files:</h3>
+                <ul id="file-list" class="text-sm text-gray-600 space-y-1"></ul>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error-message" class="hidden text-red-600 text-sm"></div>
+
+            <!-- Actions -->
+            <div class="flex gap-4">
+                <button
+                    onclick="handleCombinePDFs()"
+                    class="btn-primary"
+                    disabled
+                >
+                    Combine PDFs
+                </button>
+                <button
+                    onclick="handleCompressPDF()"
+                    class="btn-primary"
+                    disabled
+                >
+                    Compress PDF
+                </button>
+                <button
+                    onclick="clearFiles()"
+                    class="btn-secondary hidden"
+                >
+                    Clear Files
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+    .btn-primary {
+        @apply bg-primary text-white px-4 py-2 rounded-md font-medium 
+               hover:bg-primary/90 transition-colors duration-200
+               disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+    .btn-secondary {
+        @apply bg-gray-200 text-gray-800 px-4 py-2 rounded-md font-medium 
+               hover:bg-gray-300 transition-colors duration-200;
+    }
+</style>
+
+<script>
+    let selectedFiles = [];
+    const fileInput = document.getElementById('pdf-files');
+    const selectedFilesDiv = document.getElementById('selected-files');
+    const fileList = document.getElementById('file-list');
+    const errorMessage = document.getElementById('error-message');
+    const combineButton = document.querySelector('button[onclick="handleCombinePDFs()"]');
+    const compressButton = document.querySelector('button[onclick="handleCompressPDF()"]');
+    const clearButton = document.querySelector('button[onclick="clearFiles()"]');
+
+    fileInput.addEventListener('change', (e) => {
+        selectedFiles = Array.from(e.target.files);
+        updateUI();
+    });
+
+    function updateUI() {
+        // Clear previous error
+        errorMessage.textContent = '';
+        errorMessage.classList.add('hidden');
+
+        // Update file list
+        if (selectedFiles.length > 0) {
+            selectedFilesDiv.classList.remove('hidden');
+            clearButton.classList.remove('hidden');
+            fileList.innerHTML = selectedFiles
+                .map(file => `
+                    <li class="flex items-center">
+                        <svg class="h-4 w-4 text-primary mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        <span class="truncate">${file.name}</span>
+                        <span class="ml-2 text-gray-400">(${(file.size / 1024).toFixed(1)} KB)</span>
+                    </li>
+                `)
+                .join('');
+        } else {
+            selectedFilesDiv.classList.add('hidden');
+            clearButton.classList.add('hidden');
+            fileList.innerHTML = '';
+        }
+
+        // Update button states
+        combineButton.disabled = selectedFiles.length < 2;
+        compressButton.disabled = selectedFiles.length !== 1;
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.remove('hidden');
+    }
+
+    async function handleCombinePDFs() {
+        if (selectedFiles.length < 2) {
+            showError('Please select at least 2 PDF files to combine');
+            return;
+        }
+
+        const formData = new FormData();
+        selectedFiles.forEach(file => {
+            formData.append('files', file);
+        });
+
+        try {
+            const response = await fetch('/pdf/combine', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to combine PDF files');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'combined.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        } catch (error) {
+            showError('Failed to combine PDF files. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+
+    async function handleCompressPDF() {
+        if (selectedFiles.length !== 1) {
+            showError('Please select exactly 1 PDF file to compress');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', selectedFiles[0]);
+
+        try {
+            const response = await fetch('/pdf/compress', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to compress PDF file');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `compressed_${selectedFiles[0].name}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        } catch (error) {
+            showError('Failed to compress PDF file. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+
+    function clearFiles() {
+        fileInput.value = '';
+        selectedFiles = [];
+        updateUI();
+    }
+</script>
+{% endblock %} 
