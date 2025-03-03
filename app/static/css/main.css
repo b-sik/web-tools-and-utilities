@@ -11,7 +11,12 @@
 }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    font-family:
+        system-ui,
+        -apple-system,
+        sans-serif;
     line-height: 1.5;
     color: var(--text-color);
     background-color: var(--background-color);
@@ -120,6 +125,32 @@ body {
         grid-template-columns: 1fr;
         max-width: 1000px;
         margin: 0 auto;
+    }
+}
+
+.grid-main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .grid-main {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-main {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-main {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -583,9 +614,9 @@ body {
     .unit-converter .form-controls {
         gap: 1.5rem;
     }
-    
+
     .unit-converter .result-display {
         font-size: 1.2rem;
         padding: 1rem;
     }
-} 
+}
