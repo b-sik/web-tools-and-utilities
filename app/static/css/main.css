@@ -544,4 +544,48 @@ body {
 .subnav-link:focus {
     color: var(--primary-color);
     border-bottom-color: var(--primary-color);
+}
+
+/* Unit Converter Styles */
+.unit-converter .form-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.unit-converter .form-group {
+    width: 100%;
+}
+
+.unit-converter .result-display {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.unit-converter .result-value {
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.unit-converter .result-unit {
+    color: #666;
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+    .unit-converter .form-controls {
+        gap: 1.5rem;
+    }
+    
+    .unit-converter .result-display {
+        font-size: 1.2rem;
+        padding: 1rem;
+    }
 } 

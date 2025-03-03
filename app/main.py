@@ -6,6 +6,7 @@ import logging
 from datetime import datetime
 from .routes.pdf import router as pdf_router
 from .routes.image import router as image_router
+from .routes.units import router as units_router
 from .config import UTILITIES
 
 # Setup logging
@@ -42,6 +43,7 @@ uploads_dir.mkdir(exist_ok=True)
 # Include routers
 app.include_router(pdf_router, prefix="/pdf", tags=["pdf"])
 app.include_router(image_router, prefix="/image", tags=["image"])
+app.include_router(units_router, prefix="/units", tags=["units"])
 
 @app.get("/")
 async def home(request: Request):
