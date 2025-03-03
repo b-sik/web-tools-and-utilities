@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /static/
+Disallow: /uploads/
+
+# Sitemap
+Sitemap: https://web-tools-and-utilities.com/sitemap.xml 

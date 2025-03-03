@@ -1,45 +1,203 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Utilities</title>
-    <link rel="stylesheet" href="/static/css/main.css">
-</head>
-<body>
-    <header class="header">
-        <div class="container header-content">
-            <a href="/" class="header-title">Web Utils</a>
-            <nav class="nav">
-                {% for utility in utilities %}
-                <a href="{{ utility.path }}" class="nav-link {% if request.path.strip('/') == utility.path.strip('/') %}active{% endif %}">
-                    <span class="nav-link-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ utility.icon_path }}" />
-                        </svg>
-                    </span>
-                    {{ utility.name }}
-                </a>
-                {% endfor %}
-            </nav>
-        </div>
-    </header>
-    {% block subnav %}{% endblock %}
+<!doctype html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <main class="main">
-        <div class="container">
-            {% block content %}{% endblock %}
-        </div>
-    </main>
+        <!-- Security Headers -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self' https://cloud.umami.is; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline';"
+        />
 
-    <footer class="footer">
-        <div class="container">
-            <p class="footer-text">
-                © {{ year }} Web Utilities. All rights reserved.
-            </p>
-        </div>
-    </footer>
+        <!-- Favicon and App Icons -->
+        <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/static/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/static/favicon-16x16.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/static/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="192x192"
+            href="/static/android-chrome-192x192.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="512x512"
+            href="/static/android-chrome-512x512.png"
+        />
+        <link rel="manifest" href="/static/site.webmanifest" />
+        <meta name="theme-color" content="#6B46C1" />
+        <meta name="msapplication-TileColor" content="#6B46C1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-    {% block scripts %}{% endblock %}
-</body>
-</html> 
+        <title>
+            Web Tools and Utilities - Free Online PDF, Image & Unit Conversion
+            Tools
+        </title>
+
+        <!-- Canonical URL -->
+        <link
+            rel="canonical"
+            href="https://web-tools-and-utilities.com{{ request.path }}"
+        />
+
+        <!-- Language Alternatives -->
+        <link
+            rel="alternate"
+            href="https://web-tools-and-utilities.com"
+            hreflang="x-default"
+        />
+        <link
+            rel="alternate"
+            href="https://web-tools-and-utilities.com"
+            hreflang="en"
+        />
+
+        <!-- SEO Meta Tags -->
+        <meta
+            name="description"
+            content="Free online tools for PDF manipulation, image processing, and unit conversion. Combine and compress PDFs, resize and convert images, and perform unit conversions with this easy-to-use web utility suite."
+        />
+        <meta
+            name="keywords"
+            content="pdf tools, image converter, unit converter, pdf compression, image resize, file tools, web utilities, online tools, file conversion"
+        />
+        <meta name="author" content="BSIK.NET" />
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="google" content="notranslate" />
+
+        <!-- Performance Meta Tags -->
+        <meta http-equiv="x-dns-prefetch-control" content="on" />
+        <link rel="dns-prefetch" href="https://cloud.umami.is" />
+        <link rel="preconnect" href="https://cloud.umami.is" />
+
+        <!-- Open Graph Meta Tags -->
+        <meta
+            property="og:title"
+            content="Web Tools and Utilities - Free Online PDF, Image & Unit Conversion Tools"
+        />
+        <meta
+            property="og:description"
+            content="Free online tools for PDF manipulation, image processing, and unit conversion. No account required, instant results."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://web-tools-and-utilities.com" />
+        <meta property="og:site_name" content="Web Tools and Utilities" />
+        <meta property="og:locale" content="en_US" />
+
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Web Tools and Utilities" />
+        <meta
+            name="twitter:description"
+            content="Free online tools for PDF manipulation, image processing, and unit conversion. No account required, instant results."
+        />
+
+        <link rel="stylesheet" href="/static/css/main.css" />
+
+        <!-- JSON-LD Structured Data -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebApplication",
+                "name": "Web Tools and Utilities",
+                "description": "Free online tools for PDF manipulation, image processing, and unit conversion",
+                "url": "https://web-tools-and-utilities.com",
+                "applicationCategory": "UtilitiesApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                },
+                "creator": {
+                    "@type": "Organization",
+                    "name": "BSIK.NET",
+                    "url": "https://bsik.net"
+                }
+            }
+        </script>
+
+        <script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id="3c19734e-b2cc-44b4-ab94-88b7421322f5"
+        ></script>
+    </head>
+    <body>
+        <header class="header">
+            <div class="container header-content">
+                <a href="/" class="header-title">Web Tools and Utilities</a>
+                <nav class="nav">
+                    {% for utility in utilities %}
+                    <a
+                        href="{{ utility.path }}"
+                        class="nav-link {% if request.path.strip('/') == utility.path.strip('/') %}active{% endif %}"
+                    >
+                        <span class="nav-link-icon">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="{{ utility.icon_path }}"
+                                />
+                            </svg>
+                        </span>
+                        {{ utility.name }}
+                    </a>
+                    {% endfor %}
+                </nav>
+            </div>
+        </header>
+        {% block subnav %}{% endblock %}
+
+        <main class="main">
+            <div class="container">{% block content %}{% endblock %}</div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="footer-text">
+                    © {{ year }} <a href="https://bsik.net">BSIK.NET</a>. All
+                    rights reserved. | We do not collect any personal or
+                    identifiable data. All files uploaded to the server are
+                    deleted immediately after processing. Anonymous visitor data
+                    is collected by <a href="https://umami.is">umami.is</a> and
+                    stored within the EU. Please see our
+                    <a href="/privacy">Privacy Policy</a> for more information.
+                    | These tools are built with Python, feel free to peruse the
+                    <a href="https://github.com/b-sik/web-tools-and-utilities"
+                        >source code</a
+                    >.
+                </p>
+            </div>
+        </footer>
+
+        {% block scripts %}{% endblock %}
+    </body>
+</html>
