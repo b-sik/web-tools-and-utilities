@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
+{% block subnav %}
+{% with utility = utilities|selectattr("id", "equalto", "image")|first %}
+    {% include "components/subnav.html" %}
+{% endwith %}
+{% endblock %}
+
 {% block content %}
 <div class="section">
     <h1 class="section-title">Image Tools</h1>
     <p class="section-description">Resize, convert, and optimize your images with ease.</p>
 
     <div class="grid">
-        <div class="card">
+        <div class="card" id="resize">
             <h2 class="card-title">Resize Image</h2>
             <p class="card-description">Change the dimensions of your image while maintaining quality.</p>
             
@@ -52,7 +58,7 @@
             </form>
         </div>
 
-        <div class="card">
+        <div class="card" id="convert">
             <h2 class="card-title">Convert Format</h2>
             <p class="card-description">Convert your image to a different format.</p>
             
@@ -77,7 +83,7 @@
             </form>
         </div>
 
-        <div class="card">
+        <div class="card" id="optimize">
             <h2 class="card-title">Optimize Image</h2>
             <p class="card-description">Reduce file size while maintaining acceptable quality.</p>
             

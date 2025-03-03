@@ -504,4 +504,44 @@ body {
     text-align: center;
     font-size: 0.875rem;
     color: var(--text-muted);
+}
+
+/* Subnavigation */
+.subnav {
+    background-color: white;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.subnav .container {
+    padding: 0 1rem;
+}
+
+.subnav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+    height: 3rem;
+    align-items: center;
+}
+
+.subnav-item {
+    margin: 0;
+}
+
+.subnav-link {
+    display: inline-block;
+    padding: 0.75rem 0;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.subnav-link:hover,
+.subnav-link:focus {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
 } 

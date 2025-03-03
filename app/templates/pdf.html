@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
+{% block subnav %}
+{% with utility = utilities|selectattr("id", "equalto", "pdf")|first %}
+    {% include "components/subnav.html" %}
+{% endwith %}
+{% endblock %}
+
 {% block content %}
 <div class="section">
     <h1 class="section-title">PDF Tools</h1>
     <p class="section-description">Combine and compress your PDF files with ease.</p>
 
     <div class="grid">
-        <div class="card">
+        <div class="card" id="combine">
             <h2 class="card-title">Combine PDFs</h2>
             <p class="card-description">Select multiple PDF files to combine them into a single PDF.</p>
             
@@ -35,15 +41,25 @@
             </form>
         </div>
 
-        <div class="card">
+        <div class="card" id="compress">
             <h2 class="card-title">Compress PDF</h2>
-            <p class="card-description">Reduce the file size of your PDF while maintaining quality.</p>
+            <p class="card-description">Reduce the file size of your PDF while maintaining readability.</p>
             
             <form action="/pdf/compress" method="post" enctype="multipart/form-data" class="form">
                 <div class="form-group">
                     <label for="file" class="form-label">Select PDF file</label>
                     <input type="file" name="file" id="file" accept=".pdf" class="form-input" required>
                 </div>
+
+                <div class="form-group">
+                    <label for="quality" class="form-label">Quality Level</label>
+                    <select name="quality" id="quality" class="form-input" required>
+                        <option value="high">High (Minimal compression)</option>
+                        <option value="medium" selected>Medium (Balanced)</option>
+                        <option value="low">Low (Maximum compression)</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Compress PDF</button>
             </form>
         </div>
