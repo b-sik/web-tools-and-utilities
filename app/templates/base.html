@@ -4,36 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Utilities</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3b82f6',
-                        secondary: '#6b7280',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="/static/css/main.css">
 </head>
-<body class="min-h-screen bg-gray-50">
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold text-gray-900">
-                <a href="/">Web Utilities</a>
-            </h1>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="/" class="header-title">Web Utilities</a>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {% block content %}{% endblock %}
+    <main class="main">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </main>
 
-    <footer class="bg-white border-t border-gray-200 mt-auto">
-        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-gray-500 text-sm">
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
                 © {{ year }} Web Utilities. All rights reserved.
             </p>
         </div>

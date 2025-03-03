@@ -14,3 +14,8 @@
 2025-03-02 19:18:09,664 - app.main - INFO - PDF tools page accessed
 2025-03-02 19:18:16,495 - app.routes.pdf - INFO - Combining 2 PDF files
 2025-03-02 19:18:45,831 - app.routes.pdf - INFO - Compressing PDF file: Brian Siklinski - police background check.pdf
+2025-03-02 21:32:16,350 - app.main - INFO - Home page accessed
+2025-03-02 21:32:24,548 - app.main - INFO - PDF tools page accessed
+2025-03-02 21:32:50,568 - app.routes.pdf - INFO - Combining 2 PDF files
+2025-03-02 21:34:10,266 - app.main - INFO - PDF tools page accessed
+2025-03-02 21:35:52,092 - app.main - INFO - Home page accessed
