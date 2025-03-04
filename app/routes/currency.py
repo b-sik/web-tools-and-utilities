@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from datetime import datetime
 import httpx
 from app.config import UTILITIES
+from .. import limiter
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -42,6 +43,7 @@ CURRENCIES = [
 ]
 
 @router.get("/")
+@limiter.limit("60 per minute")
 async def currency_converter(request: Request):
     """Render the currency converter page."""
     return templates.TemplateResponse(
@@ -55,7 +57,9 @@ async def currency_converter(request: Request):
     )
 
 @router.get("/api/convert")
+@limiter.limit("120 per minute")  # Higher limit for API endpoint
 async def convert_currency(
+    request: Request,  # Required for rate limiting
     amount: float,
     from_currency: str,
     to_currency: str

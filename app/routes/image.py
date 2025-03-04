@@ -9,6 +9,7 @@ import os
 from datetime import datetime
 import tempfile
 from ..config import UTILITIES
+from .. import limiter
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -25,7 +26,9 @@ def save_temp_file(img: Image.Image, format: str, filename: str) -> Path:
     return temp_path
 
 @router.post("/resize")
+@limiter.limit("20 per minute")
 async def resize_image(
+    request: Request,  # Required for rate limiting
     file: UploadFile = File(...),
     width: int = Form(...),
     height: int = Form(...),
@@ -64,9 +67,11 @@ async def resize_image(
         raise HTTPException(status_code=500, detail="Error processing image")
 
 @router.post("/convert")
+@limiter.limit("20 per minute")
 async def convert_image(
+    request: Request,  # Required for rate limiting
     file: UploadFile = File(...),
-    format: str = Form(...),
+    format: str = Form(...)
 ):
     """Convert an image to a different format."""
     try:
@@ -95,9 +100,11 @@ async def convert_image(
         raise HTTPException(status_code=500, detail="Error processing image")
 
 @router.post("/optimize")
+@limiter.limit("20 per minute")
 async def optimize_image(
+    request: Request,  # Required for rate limiting
     file: UploadFile = File(...),
-    quality: int = Form(85),
+    quality: int = Form(...)
 ):
     """Optimize an image by reducing its file size while maintaining acceptable quality."""
     try:

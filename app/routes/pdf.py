@@ -1,21 +1,41 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks
+from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks, Request
 from fastapi.responses import FileResponse
+from fastapi.templating import Jinja2Templates
 from pypdf import PdfReader, PdfWriter
 from pathlib import Path
 import logging
 import tempfile
 import shutil
 import os
+from .. import limiter
+from ..config import UTILITIES
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+templates = Jinja2Templates(directory="app/templates")
 
 # Create a temporary directory that persists across requests
 TEMP_DIR = Path(tempfile.gettempdir()) / "web_utils_pdfs"
 TEMP_DIR.mkdir(exist_ok=True)
 
+@router.get("/")
+@limiter.limit("60 per minute")
+async def pdf_tools(request: Request):
+    """Render the PDF tools page."""
+    logger.info("PDF tools page accessed")
+    return templates.TemplateResponse(
+        "pdf.html",
+        {"request": request, "utilities": UTILITIES, "year": datetime.now().year}
+    )
+
 @router.post("/combine")
-async def combine_pdfs(files: list[UploadFile] = File(...), background_tasks: BackgroundTasks = None):
+@limiter.limit("30 per minute")  # Lower limit for resource-intensive operations
+async def combine_pdfs(
+    request: Request,  # Required for rate limiting
+    files: list[UploadFile] = File(...),
+    background_tasks: BackgroundTasks = None
+):
     """Combine multiple PDF files into one."""
     if len(files) < 2:
         raise HTTPException(status_code=400, detail="At least 2 PDF files are required")
@@ -75,7 +95,12 @@ async def combine_pdfs(files: list[UploadFile] = File(...), background_tasks: Ba
         raise HTTPException(status_code=500, detail="Failed to combine PDF files")
 
 @router.post("/compress")
-async def compress_pdf(file: UploadFile = File(...), background_tasks: BackgroundTasks = None):
+@limiter.limit("30 per minute")  # Lower limit for resource-intensive operations
+async def compress_pdf(
+    request: Request,  # Required for rate limiting
+    file: UploadFile = File(...),
+    background_tasks: BackgroundTasks = None
+):
     """Compress a PDF file."""
     if not file.filename.lower().endswith('.pdf'):
         raise HTTPException(status_code=400, detail="File must be a PDF")

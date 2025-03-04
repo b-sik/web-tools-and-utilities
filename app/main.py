@@ -63,21 +63,17 @@ async def sitemap():
 
 @app.get("/")
 async def home(request: Request):
-    """Render the home page with all available utilities."""
+    """Render the home page."""
     logger.info("Home page accessed")
     return templates.TemplateResponse(
         "index.html",
         {"request": request, "year": request.state.year, "utilities": UTILITIES}
     )
 
-@app.get("/pdf")
-async def pdf_tools(request: Request):
-    """Render the PDF tools page."""
-    logger.info("PDF tools page accessed")
-    return templates.TemplateResponse(
-        "pdf.html",
-        {"request": request, "year": request.state.year, "utilities": UTILITIES}
-    )
+@app.get("/favicon.ico")
+async def favicon():
+    """Serve the favicon."""
+    return FileResponse("app/static/img/favicon.ico")
 
 @app.get("/health")
 async def health_check():

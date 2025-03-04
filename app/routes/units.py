@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 from app.config import UNIT_CONVERSIONS, UTILITIES
+from .. import limiter
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -34,6 +35,7 @@ def convert_temperature(value: float, from_unit: str, to_unit: str) -> float:
         raise ValueError(f"Unsupported temperature unit: {to_unit}")
 
 @router.get("/")
+@limiter.limit("60 per minute")
 async def unit_converter(request: Request):
     """Render the unit converter page."""
     return templates.TemplateResponse(
@@ -47,7 +49,9 @@ async def unit_converter(request: Request):
     )
 
 @router.get("/api/convert", response_model=ConversionResult)
+@limiter.limit("120 per minute")  # Higher limit for API endpoint
 async def convert_units(
+    request: Request,  # Required for rate limiting
     type: str = Query(..., description="Type of unit to convert"),
     from_unit: str = Query(..., description="Source unit"),
     to_unit: str = Query(..., description="Target unit"),
