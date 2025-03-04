@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta
             http-equiv="Content-Security-Policy"
-            content="default-src 'self'; connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev; script-src 'self' https://cloud.umami.is https://api-gateway.umami.dev; style-src 'self'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline';"
+            content="default-src 'self'; connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev https://cdnjs.cloudflare.com blob:; script-src 'self' https://cloud.umami.is https://api-gateway.umami.dev https://cdnjs.cloudflare.com 'unsafe-eval'; style-src 'self'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data: blob:; worker-src blob:;"
         />
         <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 
@@ -230,6 +230,7 @@
 
         {% block scripts %}{% endblock %}
         <script src="/static/js/form-validation.js"></script>
+        <script src="/static/js/pdf-handler.js"></script>
         <script src="/static/js/theme.js"></script>
     </body>
 </html>
