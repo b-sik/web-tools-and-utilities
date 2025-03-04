@@ -8,6 +8,7 @@ from .routes.pdf import router as pdf_router
 from .routes.image import router as image_router
 from .routes.units import router as units_router
 from .routes.privacy import router as privacy_router
+from .routes.currency import router as currency_router
 from .config import UTILITIES
 from fastapi.responses import FileResponse
 
@@ -47,6 +48,7 @@ app.include_router(pdf_router, prefix="/pdf", tags=["pdf"])
 app.include_router(image_router, prefix="/image", tags=["image"])
 app.include_router(units_router, prefix="/units", tags=["units"])
 app.include_router(privacy_router, prefix="/privacy", tags=["privacy"])
+app.include_router(currency_router, prefix="/currency", tags=["currency"])
 
 # Serve robots.txt and sitemap.xml from root
 @app.get("/robots.txt")
