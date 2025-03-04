@@ -865,13 +865,14 @@ body {
     }
 }
 
-.form-input:invalid {
-    border-color: #ef4444;
+/* Remove all invalid pseudo-class styles */
+.form-input.is-invalid {
+    border-color: var(--error-color);
 }
 
-.form-input:invalid:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+.form-input.is-invalid:focus {
+    border-color: var(--error-color);
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
 }
 
 /* Larger touch targets for mobile */
