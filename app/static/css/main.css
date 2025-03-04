@@ -93,7 +93,8 @@ body {
         align-items: flex-start;
     }
 
-    .nav {
+    .nav,
+    .subnav {
         width: 100%;
         overflow-x: auto;
         padding-bottom: 0.5rem;
@@ -619,4 +620,52 @@ body {
         font-size: 1.2rem;
         padding: 1rem;
     }
+}
+
+/* Privacy Policy */
+.privacy-policy {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.privacy-policy h2 {
+    color: var(--text-color);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+}
+
+.privacy-policy p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.privacy-policy ul {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.privacy-policy li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.privacy-policy .effective-date {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.privacy-policy strong {
+    font-weight: 600;
+}
+
+/* Hidden by default */
+.preview-container,
+.result-group {
+    display: none;
 }

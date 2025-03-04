@@ -8,8 +8,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta
             http-equiv="Content-Security-Policy"
-            content="default-src 'self' https://cloud.umami.is; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline';"
+            content="default-src 'self'; script-src 'self' https://cloud.umami.is https://api-gateway.umami.dev; style-src 'self';"
         />
+        <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 
         <!-- Favicon and App Icons -->
         <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
@@ -89,6 +90,8 @@
         <meta http-equiv="x-dns-prefetch-control" content="on" />
         <link rel="dns-prefetch" href="https://cloud.umami.is" />
         <link rel="preconnect" href="https://cloud.umami.is" />
+        <link rel="dns-prefetch" href="https://api-gateway.umami.dev" />
+        <link rel="preconnect" href="https://api-gateway.umami.dev" />
 
         <!-- Open Graph Meta Tags -->
         <meta
