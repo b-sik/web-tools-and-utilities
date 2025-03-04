@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-theme="light">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -115,6 +115,7 @@
         />
 
         <link rel="stylesheet" href="/static/css/main.css" />
+        <link rel="stylesheet" href="/static/css/dark-mode.css" />
 
         <!-- JSON-LD Structured Data -->
         <script type="application/ld+json">
@@ -151,35 +152,51 @@
         <header class="header" role="banner">
             <div class="container header-content">
                 <a href="/" class="header-title" aria-label="Home">Web Tools and Utilities</a>
-                <nav class="nav" role="navigation" aria-label="Main navigation">
-                    {% for utility in utilities %}
-                    <a
-                        href="{{ utility.path }}"
-                        class="nav-link {% if request.path.strip('/') == utility.path.strip('/') %}active{% endif %}"
-                        {% if request.path.strip('/') == utility.path.strip('/') %}aria-current="page"{% endif %}
-                        aria-label="{{ utility.name }} tools"
+                <div class="header-right">
+                    <nav class="nav" role="navigation" aria-label="Main navigation">
+                        {% for utility in utilities %}
+                        <a
+                            href="{{ utility.path }}"
+                            class="nav-link {% if request.path.strip('/') == utility.path.strip('/') %}active{% endif %}"
+                            {% if request.path.strip('/') == utility.path.strip('/') %}aria-current="page"{% endif %}
+                            aria-label="{{ utility.name }} tools"
+                        >
+                            <span class="nav-link-icon" aria-hidden="true">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    role="img"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="{{ utility.icon_path }}"
+                                    />
+                                </svg>
+                            </span>
+                            {{ utility.name }}
+                        </a>
+                        {% endfor %}
+                    </nav>
+                    <button 
+                        id="theme-toggle" 
+                        class="theme-toggle" 
+                        aria-label="Toggle dark mode"
+                        role="switch"
+                        aria-checked="false"
                     >
-                        <span class="nav-link-icon" aria-hidden="true">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                role="img"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="{{ utility.icon_path }}"
-                                />
-                            </svg>
-                        </span>
-                        {{ utility.name }}
-                    </a>
-                    {% endfor %}
-                </nav>
+                        <svg class="theme-toggle-icon theme-toggle-icon-light" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg class="theme-toggle-icon theme-toggle-icon-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </header>
         
@@ -212,5 +229,6 @@
         </footer>
 
         {% block scripts %}{% endblock %}
+        <script src="/static/js/theme.js"></script>
     </body>
 </html>
