@@ -50,8 +50,7 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
         <title>
-            Web Tools and Utilities - Free Online PDF, Image & Unit Conversion
-            Tools
+            {% block title %}Web Tools and Utilities - Free Online PDF, Image & Unit Conversion Tools{% endblock %}
         </title>
 
         <!-- Canonical URL -->
@@ -75,7 +74,7 @@
         <!-- SEO Meta Tags -->
         <meta
             name="description"
-            content="Free online tools for PDF manipulation, image processing, and unit conversion. Combine and compress PDFs, resize and convert images, and perform unit conversions with this easy-to-use web utility suite."
+            content="{% block meta_description %}Free online tools for PDF manipulation, image processing, and unit conversion. Combine and compress PDFs, resize and convert images, and perform unit conversions with this easy-to-use web utility suite.{% endblock %}"
         />
         <meta
             name="keywords"
@@ -96,11 +95,11 @@
         <!-- Open Graph Meta Tags -->
         <meta
             property="og:title"
-            content="Web Tools and Utilities - Free Online PDF, Image & Unit Conversion Tools"
+            content="{% block og_title %}Web Tools and Utilities - Free Online PDF, Image & Unit Conversion Tools{% endblock %}"
         />
         <meta
             property="og:description"
-            content="Free online tools for PDF manipulation, image processing, and unit conversion. No account required, instant results."
+            content="{% block og_description %}Free online tools for PDF manipulation, image processing, and unit conversion. No account required, instant results.{% endblock %}"
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://web-tools-and-utilities.com" />
@@ -109,10 +108,10 @@
 
         <!-- Twitter Card Meta Tags -->
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="Web Tools and Utilities" />
+        <meta name="twitter:title" content="{% block twitter_title %}Web Tools and Utilities{% endblock %}" />
         <meta
             name="twitter:description"
-            content="Free online tools for PDF manipulation, image processing, and unit conversion. No account required, instant results."
+            content="{% block twitter_description %}Free online tools for PDF manipulation, image processing, and unit conversion. No account required, instant results.{% endblock %}"
         />
 
         <link rel="stylesheet" href="/static/css/main.css" />
@@ -147,21 +146,27 @@
         ></script>
     </head>
     <body>
-        <header class="header">
+        <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+        
+        <header class="header" role="banner">
             <div class="container header-content">
-                <a href="/" class="header-title">Web Tools and Utilities</a>
-                <nav class="nav">
+                <a href="/" class="header-title" aria-label="Home">Web Tools and Utilities</a>
+                <nav class="nav" role="navigation" aria-label="Main navigation">
                     {% for utility in utilities %}
                     <a
                         href="{{ utility.path }}"
                         class="nav-link {% if request.path.strip('/') == utility.path.strip('/') %}active{% endif %}"
+                        {% if request.path.strip('/') == utility.path.strip('/') %}aria-current="page"{% endif %}
+                        aria-label="{{ utility.name }} tools"
                     >
-                        <span class="nav-link-icon">
+                        <span class="nav-link-icon" aria-hidden="true">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
+                                role="img"
+                                aria-hidden="true"
                             >
                                 <path
                                     stroke-linecap="round"
@@ -177,13 +182,14 @@
                 </nav>
             </div>
         </header>
+        
         {% block subnav %}{% endblock %}
 
-        <main class="main">
+        <main class="main" id="main-content" role="main" tabindex="-1">
             <div class="container">{% block content %}{% endblock %}</div>
         </main>
 
-        <footer class="footer">
+        <footer class="footer" role="contentinfo">
             <div class="container">
                 <p class="footer-text">
                     If you found these tools useful, consider donating
@@ -192,21 +198,20 @@
                 <p class="footer-text">
                     <a
                         href="https://www.paypal.com/donate/?business=QHL62AWL3PSMN&no_recurring=0&currency_code=USD"
-                        >PayPal</a
-                    >
+                        aria-label="Donate via PayPal"
+                    >PayPal</a>
                 </p>
                 <p class="footer-text">
-                    © {{ year }} <a href="https://bsik.net">BSIK.NET</a>. All
+                    © {{ year }} <a href="https://bsik.net" aria-label="Visit BSIK.NET">BSIK.NET</a>. All
                     rights reserved. | We do not collect any personal or
                     identifiable data. All files uploaded to the server are
                     deleted immediately after processing. Anonymous visitor data
-                    is collected by <a href="https://umami.is">umami.is</a> and
+                    is collected by <a href="https://umami.is" aria-label="Visit Umami Analytics">umami.is</a> and
                     stored within the EU. Please see our
-                    <a href="/privacy">Privacy Policy</a> for more information.
+                    <a href="/privacy" aria-label="View Privacy Policy">Privacy Policy</a> for more information.
                     | These tools are built with Python, feel free to peruse the
                     <a href="https://github.com/b-sik/web-tools-and-utilities"
-                        >source code</a
-                    >.
+                        aria-label="View source code on GitHub">source code</a>.
                 </p>
             </div>
         </footer>

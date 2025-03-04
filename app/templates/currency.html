@@ -7,22 +7,36 @@
 {% endblock %}
 
 {% block content %}
-<div class="section">
+<div class="section" role="main">
     <h1 class="section-title">Currency Converter</h1>
     <p class="section-description">Convert between different currencies with real-time exchange rates.</p>
 
     <div class="grid">
         <div class="card">
-            <form class="form currency-converter">
+            <form class="form currency-converter" role="form" aria-label="Currency conversion form">
                 <div class="form-controls">
                     <div class="form-group">
-                        <label for="amount" class="form-label">Amount</label>
-                        <input type="number" id="amount" class="form-input" required step="0.01" min="0">
+                        <label for="amount" class="form-label" id="amount-label">Amount</label>
+                        <input 
+                            type="number" 
+                            id="amount" 
+                            class="form-input" 
+                            required 
+                            step="0.01" 
+                            min="0" 
+                            aria-labelledby="amount-label"
+                            aria-required="true"
+                            aria-describedby="amount-description">
+                        <div class="sr-only" id="amount-description">Enter the amount you want to convert. Use decimal point for cents.</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="from-currency" class="form-label">From</label>
-                        <select id="from-currency" class="form-input">
+                        <label for="from-currency" class="form-label" id="from-currency-label">From</label>
+                        <select 
+                            id="from-currency" 
+                            class="form-input" 
+                            aria-labelledby="from-currency-label"
+                            aria-required="true">
                             {% for currency in currencies %}
                             <option value="{{ currency.code }}">{{ currency.name }} ({{ currency.code }})</option>
                             {% endfor %}
@@ -30,25 +44,34 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="to-currency" class="form-label">To</label>
-                        <select id="to-currency" class="form-input">
+                        <label for="to-currency" class="form-label" id="to-currency-label">To</label>
+                        <select 
+                            id="to-currency" 
+                            class="form-input"
+                            aria-labelledby="to-currency-label"
+                            aria-required="true">
                             {% for currency in currencies %}
                             <option value="{{ currency.code }}">{{ currency.name }} ({{ currency.code }})</option>
                             {% endfor %}
                         </select>
                     </div>
 
-                    <div class="form-group result-group">
-                        <label class="form-label">Result</label>
-                        <div class="result-display">
-                            <span class="result-value">0</span>
-                            <span class="result-currency"></span>
+                    <div class="form-group result-group" role="region" aria-live="polite" aria-atomic="true">
+                        <label class="form-label" id="result-label">Result</label>
+                        <div class="result-display" aria-labelledby="result-label">
+                            <span class="result-value" aria-label="Converted amount">0</span>
+                            <span class="result-currency" aria-label="Target currency"></span>
                         </div>
-                        <div class="exchange-rate-info">
-                            <small>Exchange rate: <span class="rate-display">1 USD = ...</span></small>
-                            <small class="last-updated"></small>
-                            <small class="attribution"><a href="https://www.exchangerate-api.com">Rates By Exchange Rate API</a></small>
+                        <div class="exchange-rate-info" role="status" aria-live="polite">
+                            <small aria-label="Current exchange rate">Exchange rate: <span class="rate-display">1 USD = ...</span></small>
+                            <small class="last-updated" aria-label="Last update time"></small>
+                            <small class="attribution"><a href="https://www.exchangerate-api.com" aria-label="Visit Exchange Rate API website">Rates By Exchange Rate API</a></small>
                         </div>
+                    </div>
+
+                    <!-- Error message container -->
+                    <div class="error-container" role="alert" aria-live="assertive" style="display: none;">
+                        <p class="error-message"></p>
                     </div>
                 </div>
             </form>

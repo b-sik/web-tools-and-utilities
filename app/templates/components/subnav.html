@@ -1,10 +1,15 @@
 {% if utility.subnav %}
-<div class="subnav">
+<div class="subnav" role="navigation" aria-label="Section navigation">
     <div class="container">
-        <ul class="subnav-list">
+        <ul class="subnav-list" role="menubar">
             {% for item in utility.subnav %}
-            <li class="subnav-item">
-                <a href="#{{ item.anchor }}" class="subnav-link">{{ item.name }}</a>
+            <li class="subnav-item" role="none">
+                <a 
+                    href="#{{ item.anchor }}" 
+                    class="subnav-link" 
+                    role="menuitem"
+                    aria-label="Go to {{ item.name }} section"
+                >{{ item.name }}</a>
             </li>
             {% endfor %}
         </ul>

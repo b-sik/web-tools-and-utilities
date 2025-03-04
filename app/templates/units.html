@@ -7,26 +7,38 @@
 {% endblock %}
 
 {% block content %}
-<div class="section">
+<div class="section" role="main">
     <h1 class="section-title">Unit Converter</h1>
     <p class="section-description">Convert between different units of measurement with ease.</p>
 
     <div class="grid">
         {% for type, config in unit_types.items() %}
-        <div class="card" id="{{ type }}">
-            <h2 class="card-title">{{ config.name }} Converter</h2>
-            <p class="card-description">Convert between different {{ config.name.lower() }} units.</p>
+        <div class="card" id="{{ type }}" role="region" aria-labelledby="title-{{ type }}">
+            <h2 class="card-title" id="title-{{ type }}">{{ config.name }} Converter</h2>
+            <p class="card-description" id="desc-{{ type }}">Convert between different {{ config.name.lower() }} units.</p>
             
-            <form class="form unit-converter" data-type="{{ type }}">
+            <form class="form unit-converter" data-type="{{ type }}" role="form" aria-labelledby="title-{{ type }}" aria-describedby="desc-{{ type }}">
                 <div class="form-controls">
                     <div class="form-group">
-                        <label for="{{ type }}-from-value" class="form-label">Value</label>
-                        <input type="number" id="{{ type }}-from-value" class="form-input from-value" required step="any">
+                        <label for="{{ type }}-from-value" class="form-label" id="label-{{ type }}-from-value">Value</label>
+                        <input 
+                            type="number" 
+                            id="{{ type }}-from-value" 
+                            class="form-input from-value" 
+                            required 
+                            step="any"
+                            aria-labelledby="label-{{ type }}-from-value"
+                            aria-required="true">
+                        <div class="sr-only" id="{{ type }}-value-description">Enter the value you want to convert</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="{{ type }}-from-unit" class="form-label">From</label>
-                        <select id="{{ type }}-from-unit" class="form-input from-unit">
+                        <label for="{{ type }}-from-unit" class="form-label" id="label-{{ type }}-from-unit">From</label>
+                        <select 
+                            id="{{ type }}-from-unit" 
+                            class="form-input from-unit"
+                            aria-labelledby="label-{{ type }}-from-unit"
+                            aria-required="true">
                             {% for unit in config.units %}
                             <option value="{{ unit.id }}">{{ unit.name }}</option>
                             {% endfor %}
@@ -34,19 +46,23 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="{{ type }}-to-unit" class="form-label">To</label>
-                        <select id="{{ type }}-to-unit" class="form-input to-unit">
+                        <label for="{{ type }}-to-unit" class="form-label" id="label-{{ type }}-to-unit">To</label>
+                        <select 
+                            id="{{ type }}-to-unit" 
+                            class="form-input to-unit"
+                            aria-labelledby="label-{{ type }}-to-unit"
+                            aria-required="true">
                             {% for unit in config.units %}
                             <option value="{{ unit.id }}">{{ unit.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
 
-                    <div class="form-group result-group">
-                        <label class="form-label">Result</label>
-                        <div class="result-display">
-                            <span class="result-value">0</span>
-                            <span class="result-unit"></span>
+                    <div class="form-group result-group" role="region" aria-live="polite" aria-atomic="true">
+                        <label class="form-label" id="result-label-{{ type }}">Result</label>
+                        <div class="result-display" aria-labelledby="result-label-{{ type }}">
+                            <span class="result-value" aria-label="Converted value">0</span>
+                            <span class="result-unit" aria-label="Result unit"></span>
                         </div>
                     </div>
                 </div>

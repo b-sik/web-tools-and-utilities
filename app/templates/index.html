@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="grid-main"> 
+<div class="grid-main" role="grid">
     {% for utility in utilities %}
-    <div class="card">
-        <h2 class="card-title">{{ utility.name }}</h2>
+    <div class="card" role="gridcell">
+        <h2 class="card-title" id="utility-{{ utility.id }}">{{ utility.name }}</h2>
         <p class="card-description">{{ utility.description }}</p>
-        <a href="{{ utility.path }}" class="btn btn-primary">Open {{ utility.name }}</a>
+        <a 
+            href="{{ utility.path }}" 
+            class="btn btn-primary"
+            aria-labelledby="utility-{{ utility.id }}"
+            aria-describedby="desc-{{ utility.id }}"
+        >Open {{ utility.name }}</a>
+        <span id="desc-{{ utility.id }}" class="sr-only">Click to access {{ utility.name }} tools</span>
     </div>
     {% endfor %}
 </div>

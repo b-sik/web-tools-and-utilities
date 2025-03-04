@@ -7,31 +7,42 @@
 {% endblock %}
 
 {% block content %}
-<div class="section">
+<div class="section" role="main">
     <h1 class="section-title">PDF Tools</h1>
     <p class="section-description">Combine and compress your PDF files with ease.</p>
 
     <div class="grid">
-        <div class="card" id="combine">
-            <h2 class="card-title">Combine PDFs</h2>
-            <p class="card-description">Select multiple PDF files to combine them into a single PDF.</p>
+        <div class="card" id="combine" role="region" aria-labelledby="combine-title">
+            <h2 class="card-title" id="combine-title">Combine PDFs</h2>
+            <p class="card-description" id="combine-desc">Select multiple PDF files to combine them into a single PDF.</p>
             
-            <form action="/pdf/combine" method="post" enctype="multipart/form-data" class="form">
+            <form action="/pdf/combine" method="post" enctype="multipart/form-data" class="form" role="form" aria-labelledby="combine-title" aria-describedby="combine-desc">
                 <div class="form-group">
-                    <label for="files" class="form-label">Select PDF files</label>
-                    <input type="file" name="files" id="files" multiple accept=".pdf" class="form-input" required>
+                    <label for="files" class="form-label" id="files-label">Select PDF files</label>
+                    <input 
+                        type="file" 
+                        name="files" 
+                        id="files" 
+                        multiple 
+                        accept=".pdf" 
+                        class="form-input" 
+                        required
+                        aria-labelledby="files-label"
+                        aria-required="true"
+                        aria-describedby="files-description">
+                    <div class="sr-only" id="files-description">You can select multiple PDF files to combine them into one</div>
                 </div>
 
                 {% if selected_files %}
-                <div class="list">
+                <div class="list" role="list" aria-label="Selected PDF files">
                     <h3 class="list-title">Selected Files:</h3>
                     {% for file in selected_files %}
-                    <div class="list-item">
-                        <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <div class="list-item" role="listitem">
+                        <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
                         </svg>
                         <span>{{ file.name }}</span>
-                        <span class="item-meta">({{ file.size }} KB)</span>
+                        <span class="item-meta" aria-label="File size">({{ file.size }} KB)</span>
                     </div>
                     {% endfor %}
                 </div>
@@ -41,23 +52,41 @@
             </form>
         </div>
 
-        <div class="card" id="compress">
-            <h2 class="card-title">Compress PDF</h2>
-            <p class="card-description">Reduce the file size of your PDF while maintaining readability.</p>
+        <div class="card" id="compress" role="region" aria-labelledby="compress-title">
+            <h2 class="card-title" id="compress-title">Compress PDF</h2>
+            <p class="card-description" id="compress-desc">Reduce the file size of your PDF while maintaining readability.</p>
             
-            <form action="/pdf/compress" method="post" enctype="multipart/form-data" class="form">
+            <form action="/pdf/compress" method="post" enctype="multipart/form-data" class="form" role="form" aria-labelledby="compress-title" aria-describedby="compress-desc">
                 <div class="form-group">
-                    <label for="file" class="form-label">Select PDF file</label>
-                    <input type="file" name="file" id="file" accept=".pdf" class="form-input" required>
+                    <label for="file" class="form-label" id="file-label">Select PDF file</label>
+                    <input 
+                        type="file" 
+                        name="file" 
+                        id="file" 
+                        accept=".pdf" 
+                        class="form-input" 
+                        required
+                        aria-labelledby="file-label"
+                        aria-required="true"
+                        aria-describedby="file-description">
+                    <div class="sr-only" id="file-description">Select a single PDF file to compress</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="quality" class="form-label">Quality Level</label>
-                    <select name="quality" id="quality" class="form-input" required>
+                    <label for="quality" class="form-label" id="quality-label">Quality Level</label>
+                    <select 
+                        name="quality" 
+                        id="quality" 
+                        class="form-input" 
+                        required
+                        aria-labelledby="quality-label"
+                        aria-required="true"
+                        aria-describedby="quality-description">
                         <option value="high">High (Minimal compression)</option>
                         <option value="medium" selected>Medium (Balanced)</option>
                         <option value="low">Low (Maximum compression)</option>
                     </select>
+                    <div class="sr-only" id="quality-description">Choose the compression level. Higher quality means larger file size.</div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Compress PDF</button>
@@ -66,7 +95,7 @@
     </div>
 
     {% if error %}
-    <div class="error-message">
+    <div class="error-message" role="alert" aria-live="assertive">
         {{ error }}
     </div>
     {% endif %}

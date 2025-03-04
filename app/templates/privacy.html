@@ -1,65 +1,100 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="section">
+<div class="section" role="main">
     <h1 class="section-title">Privacy Policy</h1>
     
-    <div class="content privacy-policy">
-        <p class="effective-date">Effective Date: March 3, 2024</p>
+    <div class="content privacy-policy" role="article">
+        <p class="effective-date" aria-label="Policy effective date">Effective Date: March 3, 2024</p>
 
         <p>At Web Tools and Utilities, we respect your privacy and are committed to protecting the personal information that you share with us. This Privacy Policy explains how we collect, use, and protect your data when you use our web app.</p>
 
-        <h2>1. Information We Collect</h2>
-        <p>We only collect the files that you upload for the purpose of processing. These may include, but are not limited to, PDFs, images, and other document formats. We do not collect any personal information, such as your name, email, or payment details, unless explicitly required by the service.</p>
+        <nav class="privacy-nav" role="navigation" aria-label="Privacy policy sections">
+            <ul class="sr-only">
+                <li><a href="#information">Information We Collect</a></li>
+                <li><a href="#analytics">Analytics Data</a></li>
+                <li><a href="#storage">Temporary File Storage</a></li>
+                <li><a href="#usage">How We Use the Files</a></li>
+                <li><a href="#security">Security</a></li>
+                <li><a href="#deletion">File Deletion</a></li>
+                <li><a href="#third-party">Third-Party Services</a></li>
+                <li><a href="#compliance">Compliance with Laws</a></li>
+                <li><a href="#changes">Changes to This Privacy Policy</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
 
-        <h2>2. Analytics Data</h2>
-        <p>We use Umami Analytics (umami.is), a privacy-focused analytics service, to collect anonymous usage data. This helps us understand how our tools are being used and improve our services. The analytics data:</p>
-        <ul>
-            <li><strong>Is completely anonymous</strong> - no personal information is collected</li>
-            <li><strong>Is stored in the EU</strong> - complying with GDPR requirements</li>
-            <li><strong>Does not use cookies</strong> - respecting your privacy preferences</li>
-            <li><strong>Includes only:</strong> page views, visit duration, and general usage patterns</li>
-            <li><strong>Cannot identify you</strong> - we cannot track individual users</li>
-        </ul>
+        <section id="information" aria-labelledby="information-title">
+            <h2 id="information-title">1. Information We Collect</h2>
+            <p>We only collect the files that you upload for the purpose of processing. These may include, but are not limited to, PDFs, images, and other document formats. We do not collect any personal information, such as your name, email, or payment details, unless explicitly required by the service.</p>
+        </section>
 
-        <h2>3. Temporary File Storage</h2>
-        <ul>
-            <li><strong>File Upload:</strong> When you upload a file to our web app, we temporarily store the file on our servers solely for the purpose of processing the file.</li>
-            <li><strong>Storage Duration:</strong> The files are stored only for as long as it takes to process them. Once processing is complete, the files will be automatically deleted from our servers immediately after download.</li>
-        </ul>
+        <section id="analytics" aria-labelledby="analytics-title">
+            <h2 id="analytics-title">2. Analytics Data</h2>
+            <p>We use Umami Analytics (umami.is), a privacy-focused analytics service, to collect anonymous usage data. This helps us understand how our tools are being used and improve our services. The analytics data:</p>
+            <ul role="list">
+                <li role="listitem"><strong>Is completely anonymous</strong> - no personal information is collected</li>
+                <li role="listitem"><strong>Is stored in the EU</strong> - complying with GDPR requirements</li>
+                <li role="listitem"><strong>Does not use cookies</strong> - respecting your privacy preferences</li>
+                <li role="listitem"><strong>Includes only:</strong> page views, visit duration, and general usage patterns</li>
+                <li role="listitem"><strong>Cannot identify you</strong> - we cannot track individual users</li>
+            </ul>
+        </section>
 
-        <h2>4. How We Use the Files</h2>
-        <ul>
-            <li><strong>Processing:</strong> Files are used solely for the processing requested by you via our web app. We do not use the files for any other purpose.</li>
-            <li><strong>No Data Sharing:</strong> We do not share or distribute any files you upload to third parties.</li>
-        </ul>
+        <section id="storage" aria-labelledby="storage-title">
+            <h2 id="storage-title">3. Temporary File Storage</h2>
+            <ul role="list">
+                <li role="listitem"><strong>File Upload:</strong> When you upload a file to our web app, we temporarily store the file on our servers solely for the purpose of processing the file.</li>
+                <li role="listitem"><strong>Storage Duration:</strong> The files are stored only for as long as it takes to process them. Once processing is complete, the files will be automatically deleted from our servers immediately after download.</li>
+            </ul>
+        </section>
 
-        <h2>5. Security</h2>
-        <p>We implement industry-standard security measures to protect your files during the upload and processing stages. However, please note that no data transmission over the internet can be guaranteed to be completely secure. We strive to protect your files but cannot guarantee absolute security.</p>
+        <section id="usage" aria-labelledby="usage-title">
+            <h2 id="usage-title">4. How We Use the Files</h2>
+            <ul role="list">
+                <li role="listitem"><strong>Processing:</strong> Files are used solely for the processing requested by you via our web app. We do not use the files for any other purpose.</li>
+                <li role="listitem"><strong>No Data Sharing:</strong> We do not share or distribute any files you upload to third parties.</li>
+            </ul>
+        </section>
 
-        <h2>6. File Deletion</h2>
-        <p>All files uploaded to our web app are automatically deleted from our servers after processing. We ensure that no personal data or files are retained beyond the time needed to complete the processing. You may also request that your files be deleted at any time by contacting us at support@webutils.com.</p>
+        <section id="security" aria-labelledby="security-title">
+            <h2 id="security-title">5. Security</h2>
+            <p>We implement industry-standard security measures to protect your files during the upload and processing stages. However, please note that no data transmission over the internet can be guaranteed to be completely secure. We strive to protect your files but cannot guarantee absolute security.</p>
+        </section>
 
-        <h2>7. Third-Party Services</h2>
-        <p>We use the following third-party services:</p>
-        <ul>
-            <li><strong>Umami Analytics (umami.is)</strong> - For anonymous usage statistics, with data stored in the EU</li>
-            <li><strong>Processing Services</strong> - We may use third-party services for file processing, but they are subject to strict data protection and confidentiality agreements</li>
-        </ul>
-        <p>We do not share or transmit your files to any other third-party services unless explicitly stated in the process flow.</p>
+        <section id="deletion" aria-labelledby="deletion-title">
+            <h2 id="deletion-title">6. File Deletion</h2>
+            <p>All files uploaded to our web app are automatically deleted from our servers after processing. We ensure that no personal data or files are retained beyond the time needed to complete the processing. You may also request that your files be deleted at any time by contacting us at <a href="mailto:support@webutils.com" aria-label="Email support">support@webutils.com</a>.</p>
+        </section>
 
-        <h2>8. Compliance with Laws</h2>
-        <p>We are committed to complying with all applicable data protection laws. If you are a resident of a jurisdiction with specific privacy rights (such as the GDPR in the European Union), please contact us for additional details regarding your rights under such regulations.</p>
+        <section id="third-party" aria-labelledby="third-party-title">
+            <h2 id="third-party-title">7. Third-Party Services</h2>
+            <p>We use the following third-party services:</p>
+            <ul role="list">
+                <li role="listitem"><strong>Umami Analytics (umami.is)</strong> - For anonymous usage statistics, with data stored in the EU</li>
+                <li role="listitem"><strong>Processing Services</strong> - We may use third-party services for file processing, but they are subject to strict data protection and confidentiality agreements</li>
+            </ul>
+            <p>We do not share or transmit your files to any other third-party services unless explicitly stated in the process flow.</p>
+        </section>
 
-        <h2>9. Changes to This Privacy Policy</h2>
-        <p>We reserve the right to update this Privacy Policy at any time. We will notify you of any changes by posting the updated policy on this page. Please review this policy periodically for any updates.</p>
+        <section id="compliance" aria-labelledby="compliance-title">
+            <h2 id="compliance-title">8. Compliance with Laws</h2>
+            <p>We are committed to complying with all applicable data protection laws. If you are a resident of a jurisdiction with specific privacy rights (such as the GDPR in the European Union), please contact us for additional details regarding your rights under such regulations.</p>
+        </section>
 
-        <h2>10. Contact Us</h2>
-        <p>If you have any questions or concerns about this Privacy Policy or how we handle your data, please contact us at:</p>
-        <p>
-            Web Tools and Utilities<br>
-            Email: brian@bsik.net
-        </p>
+        <section id="changes" aria-labelledby="changes-title">
+            <h2 id="changes-title">9. Changes to This Privacy Policy</h2>
+            <p>We reserve the right to update this Privacy Policy at any time. We will notify you of any changes by posting the updated policy on this page. Please review this policy periodically for any updates.</p>
+        </section>
+
+        <section id="contact" aria-labelledby="contact-title">
+            <h2 id="contact-title">10. Contact Us</h2>
+            <p>If you have any questions or concerns about this Privacy Policy or how we handle your data, please contact us at:</p>
+            <address>
+                Web Tools and Utilities<br>
+                Email: <a href="mailto:brian@bsik.net" aria-label="Email us">brian@bsik.net</a>
+            </address>
+        </section>
     </div>
 </div>
 {% endblock %} 
