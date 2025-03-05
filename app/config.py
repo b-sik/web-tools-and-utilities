@@ -1,3 +1,25 @@
+from typing import List
+import os
+from dotenv import load_dotenv
+from pydantic import field_validator
+
+# Load environment variables
+load_dotenv()
+
+class Settings:
+    def __init__(self):
+        self.environment = os.getenv("ENVIRONMENT", "development")
+        
+        # Parse allowed origins from env or use default
+        origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:8000")
+        self.allowed_origins = [origin.strip() for origin in origins.split(",") if origin.strip()]
+        
+        # Parse rate limits from env or use defaults
+        self.rate_limit_per_day = int(os.getenv("RATE_LIMIT_PER_DAY", "5000"))
+        self.rate_limit_per_hour = int(os.getenv("RATE_LIMIT_PER_HOUR", "500"))
+
+settings = Settings()
+
 UTILITIES = [
     {
         'id': 'pdf',

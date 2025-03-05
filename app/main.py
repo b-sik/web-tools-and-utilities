@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import logging
 from datetime import datetime
@@ -9,7 +10,7 @@ from .routes.image import router as image_router
 from .routes.units import router as units_router
 from .routes.privacy import router as privacy_router
 from .routes.currency import router as currency_router
-from .config import UTILITIES
+from .config import UTILITIES, settings
 from fastapi.responses import FileResponse
 
 # Setup logging
@@ -24,7 +25,20 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Create FastAPI app
-app = FastAPI(title="Web Utilities")
+app = FastAPI(
+    title="Web Utilities",
+    docs_url="/api/docs" if settings.environment == "development" else None,
+    redoc_url="/api/redoc" if settings.environment == "development" else None,
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # You can restrict this to specific methods if needed
+    allow_headers=["*"],  # You can restrict this to specific headers if needed
+)
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")

@@ -6,13 +6,17 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
+from .config import settings
 
 app = FastAPI()
 
 # Initialize rate limiter
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=["5000 per day", "500 per hour"],  # Increased limits
+    default_limits=[
+        f"{settings.rate_limit_per_day} per day",
+        f"{settings.rate_limit_per_hour} per hour"
+    ],
     storage_uri="memory://",
 )
 app.state.limiter = limiter
