@@ -22,19 +22,8 @@ class PDFHandler {
     }
 
     setupFeedbackContainer() {
-        this.feedbackContainer = document.createElement("div");
-        this.feedbackContainer.className = "feedback-container";
-        this.feedbackContainer.setAttribute("role", "status");
-        this.feedbackContainer.setAttribute("aria-live", "polite");
-
-        // Insert after the form controls
-        const formControls = this.form.querySelector(
-            ".form-controls, .form-group"
-        );
-        formControls.parentNode.insertBefore(
-            this.feedbackContainer,
-            formControls.nextSibling
-        );
+        const formControls = this.form.querySelector(".form-controls, .form-group");
+        this.feedbackContainer = new FeedbackContainer(formControls);
     }
 
     setupEventListeners() {
@@ -219,38 +208,15 @@ class PDFHandler {
     }
 
     showFeedback(type, message) {
-        const feedbackClass =
-            type === "success" ? "feedback-success" : "feedback-error";
-
-        this.feedbackContainer.className =
-            "feedback-container " + feedbackClass;
-        this.feedbackContainer.textContent = message;
-
-        // Auto-hide the feedback after 5 seconds
-        setTimeout(() => {
-            this.feedbackContainer.className = "feedback-container";
-            this.feedbackContainer.textContent = "";
-        }, 5000);
+        this.feedbackContainer.show(type, message);
     }
 }
 
-// Only initialize on PDF route
+// Initialize handlers for all PDF forms
 document.addEventListener("DOMContentLoaded", () => {
     // Check if we're on the PDF route
     if (window.location.pathname.includes("/pdf")) {
-        // Load pdf.js library
-        const script = document.createElement("script");
-        script.src =
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
-        script.onload = () => {
-            // Set worker source
-            pdfjsLib.GlobalWorkerOptions.workerSrc =
-                "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-            // Initialize handlers for all PDF forms
-            const pdfForms = document.querySelectorAll('form[action^="/pdf/"]');
-            pdfForms.forEach((form) => new PDFHandler(form));
-        };
-        document.head.appendChild(script);
+        const pdfForms = document.querySelectorAll('form[action^="/pdf/"]');
+        pdfForms.forEach((form) => new PDFHandler(form));
     }
 });

@@ -102,38 +102,8 @@ class ImageHandler {
     }
 
     setupFeedbackContainer() {
-        try {
-            // Create feedback container if it doesn't exist
-            if (!this.feedbackContainer) {
-                this.feedbackContainer = document.createElement("div");
-                this.feedbackContainer.className = "feedback-container";
-                this.feedbackContainer.setAttribute("role", "status");
-                this.feedbackContainer.setAttribute("aria-live", "polite");
-
-                // Add some basic styles inline to ensure visibility
-                this.feedbackContainer.style.cssText = `
-                    margin: 1rem 0;
-                    padding: 1rem;
-                    border-radius: 0.375rem;
-                    display: none;
-                    opacity: 0;
-                    transition: opacity 0.3s ease-in-out;
-                `;
-
-                // Insert after the form controls
-                const formControls = this.form.querySelector(".form-controls");
-                if (formControls) {
-                    formControls.parentNode.insertBefore(
-                        this.feedbackContainer,
-                        formControls.nextSibling
-                    );
-                } else {
-                    this.form.appendChild(this.feedbackContainer);
-                }
-            }
-        } catch (error) {
-            console.error("Error setting up feedback container:", error);
-        }
+        const formControls = this.form.querySelector(".form-controls");
+        this.feedbackContainer = new FeedbackContainer(formControls);
     }
 
     setupEventListeners() {
@@ -699,47 +669,7 @@ class ImageHandler {
     }
 
     showFeedback(type, message) {
-        try {
-            console.log("Showing feedback:", type, message);
-
-            if (!this.feedbackContainer) {
-                console.error("Feedback container not found");
-                return;
-            }
-
-            // Clear any existing feedback
-            this.feedbackContainer.className = "feedback-container";
-            this.feedbackContainer.textContent = "";
-            this.feedbackContainer.style.display = "none";
-
-            // Force a reflow
-            void this.feedbackContainer.offsetWidth;
-
-            // Add the new feedback
-            const feedbackClass =
-                type === "success" ? "feedback-success" : "feedback-error";
-            this.feedbackContainer.className =
-                "feedback-container " + feedbackClass;
-            this.feedbackContainer.textContent = message;
-
-            // Show the feedback with transition
-            this.feedbackContainer.style.display = "block";
-            setTimeout(() => {
-                this.feedbackContainer.style.opacity = "1";
-            }, 10);
-
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                this.feedbackContainer.style.opacity = "0";
-                setTimeout(() => {
-                    this.feedbackContainer.style.display = "none";
-                    this.feedbackContainer.className = "feedback-container";
-                    this.feedbackContainer.textContent = "";
-                }, 300);
-            }, 5000);
-        } catch (error) {
-            console.error("Error showing feedback:", error);
-        }
+        this.feedbackContainer.show(type, message);
     }
 }
 

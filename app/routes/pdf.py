@@ -118,7 +118,7 @@ async def compress_pdf(
     form_data = await request.form()
     quality = form_data.get('quality')
 
-    if quality in qualities:
+    if quality not in qualities:
         raise HTTPException(
             status_code=400, detail="Acceptable quality level not provided")
 
